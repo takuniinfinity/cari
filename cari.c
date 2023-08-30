@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <dirent.h>
 
+bool ketemu = false;
 const char tentang[] = "cari [nama] [rekrusif 1/0] [direktori]";
 typedef struct {
-	
+	char alamat[100];
+	int jenis;
 } Dirs;
 
 int main(int argc, char* argv[]) {
@@ -16,7 +19,7 @@ int main(int argc, char* argv[]) {
 	
 	DIR *dir;
 	struct dirent *ent;
-	char** dirs = (char**)malloc(sizeof(char*));
+	Dirs* dirs = (Dirs*)malloc(sizeof(Dirs));
 	unsigned int jdirs = 1;
 	
 	dir = opendir(argv[3]);
@@ -27,16 +30,24 @@ int main(int argc, char* argv[]) {
 	
 	while ((ent = readdir(dir)) != NULL) {
 		if (strcmp(ent->d_name, argv[1]) == 0) {
-			char tipe[10];
-			strcpy(tipe, ent->d_type == DT_DIR ? "direktori" : "berkas");
-			dirs[jdirs-1] = (char*)malloc(strlen()*sizeof(char);
-			strcpy(dirs[jdirs-1], ent->d_name);
-			dirs = (char**)realloc(dirs, sizeof(dirs)/sizeof(char*)+1);
+			//char tipe[10];
+			//strcpy(tipe, ent->d_type == DT_DIR ? "direktori" : "berkas");
+			dirs[jdirs-1].jenis = ent->d_type;
+			strcpy(dirs[jdirs-1].alamat, ent->d_name);
+			jdirs++;
+			dirs = (Dirs*)realloc(dirs, jdirs);
+			ketemu = true;
 			//fprintf(stderr, "%s/%s\t%s\n", argv[3], ent->d_name, tipe);
 		}
 	}
 	
-	closedir(dir);.
-	free(dirs)
+	if (!ketemu) {
+		fprintf(stderr, "%s tidak ditemukan\n", argv[1]);
+	} else {
+		fprintf(stderr, "%i ditemukan\n", jdirs-1);
+	}
+	
+	closedir(dir);
+	free(dirs);
 	return 0;
 }
