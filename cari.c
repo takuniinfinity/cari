@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 	}
 	
 	while ((ent = readdir(dir)) != NULL) {
-		if (strcmp(ent->d_name, argv[1]) == 0) {
+		if (strstr(ent->d_name, argv[1]) != NULL) {
 			//char tipe[10];
 			//strcpy(tipe, ent->d_type == DT_DIR ? "direktori" : "berkas");
 			dirs[jdirs-1].jenis = ent->d_type;
@@ -39,6 +39,10 @@ int main(int argc, char* argv[]) {
 			ketemu = true;
 			//fprintf(stderr, "%s/%s\t%s\n", argv[3], ent->d_name, tipe);
 		}
+	}
+	
+	for (int i=0; i<jdirs-1; i++) {
+		fprintf(stderr, "%s\t%s\n", dirs[i].alamat, dirs[i].jenis == DT_DIR ? "direktori" : "berkas");
 	}
 	
 	if (!ketemu) {
