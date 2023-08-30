@@ -1,8 +1,14 @@
 CC=gcc
 
+ifeq ($(OS), Windows_NT)
+	exe=cari.exe
+else
+	exe=cari
+endif
+
 build:
-	$(CC) cari.c -o cari
-	strip cari
+	$(CC) cari.c -o $(exe)
+	strip $(exe)
 
 clean:
-	rm cari
+	rm $(exe)
