@@ -1,5 +1,3 @@
-CC=gcc
-
 ifeq ($(OS), Windows_NT)
 	exe=cari.exe
 else
